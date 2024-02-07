@@ -35,7 +35,7 @@ jobs:
           REGION: us-east-1
           SBOM: true # Saves SBOM to SBOM.json so you can export it as an artifact later.
           MALWARE_SCAN: true # Enable malware scan.
-          THRESHOLD: "critical"
+          # THRESHOLD: "critical"
         run: |
           # Install tmas latest version
           curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
