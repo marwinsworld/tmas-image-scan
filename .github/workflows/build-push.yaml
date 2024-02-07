@@ -56,6 +56,7 @@ jobs:
           name: scan-result
           path: result.json
           retention-days: 30
+
       - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v3
         with:
