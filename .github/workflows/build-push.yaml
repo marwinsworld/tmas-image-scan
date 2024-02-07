@@ -50,24 +50,32 @@ jobs:
           [ "${THRESHOLD}" = "any" ] && \
             [ $(jq '.vulnerability.totalVulnCount' result.json) -ne 0 ] && fail=1
 
+          echo *
           [ "${THRESHOLD}" = "critical" ] && \
             [ $(jq '.vulnerability.criticalCount' result.json) -ne 0 ] && fail=2
 
+          echo **
           [ "${THRESHOLD}" = "high" ] && \
             [ $(jq '.vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=3
 
+          echo ***
           [ "${THRESHOLD}" = "medium" ] && \
             [ $(jq '.vulnerability.mediumCount + .vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=4
 
+          echo ****
           [ "${THRESHOLD}" = "low" ] &&
             [ $(jq '.vulnerability.lowCount + .vulnerability.mediumCount + .vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=5
 
+          echo *****
           [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
 
+          echo ******
           [ $fail -eq 6 ] && echo Malware found; exit 1
 
+          echo *******
           [ $fail -ne 0 ] && echo Vulnerability threshold exceeded $fail; exit 1
 
+          echo ********
           echo $fail
           exit 0
 
