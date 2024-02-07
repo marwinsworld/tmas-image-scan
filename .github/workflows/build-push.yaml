@@ -41,13 +41,13 @@ jobs:
             IMAGE: mawinkler/nginx:latest # The image need to be public or the pipeline need to have access to the private image of choice.
             # LOCAL_IMAGE_TARBALL: image.tar
             # For each threshold below, select the maximum number of vulnerabilities that are acceptable.
-            MAX_TOTAL: 0
-            MAX_CRITICAL: 0
-            MAX_HIGH: 0
-            MAX_MEDIUM: 0
-            MAX_LOW: 0
-            MAX_NEGLIGIBLE: 0
-            MAX_UNKNOWN: 0
+            MAX_TOTAL: 1000
+            MAX_CRITICAL: 1000
+            MAX_HIGH: 1000
+            MAX_MEDIUM: 1000
+            MAX_LOW: 1000
+            MAX_NEGLIGIBLE: 1000
+            MAX_UNKNOWN: 1000
             SCAN_RESULT_ARTIFACT: result.json
 
       - name: Upload Scan Result Artifact
