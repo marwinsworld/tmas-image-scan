@@ -35,7 +35,7 @@ jobs:
           REGION: us-east-1
           SBOM: true # Saves SBOM to SBOM.json so you can export it as an artifact later.
           MALWARE_SCAN: true # Enable malware scan.
-          # THRESHOLD: "critical"
+          THRESHOLD: "critical"
         run: |
           # Install tmas latest version
           curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
@@ -50,34 +50,23 @@ jobs:
           [ "${THRESHOLD}" = "any" ] && \
             [ $(jq '.vulnerability.totalVulnCount' result.json) -ne 0 ] && fail=1
 
-          echo AA
           [ "${THRESHOLD}" = "critical" ] && \
             [ $(jq '.vulnerability.criticalCount' result.json) -ne 0 ] && fail=2
 
-          echo BB
           [ "${THRESHOLD}" = "high" ] && \
             [ $(jq '.vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=3
 
-          echo CC
           [ "${THRESHOLD}" = "medium" ] && \
             [ $(jq '.vulnerability.mediumCount + .vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=4
 
-          echo DD
           [ "${THRESHOLD}" = "low" ] &&
             [ $(jq '.vulnerability.lowCount + .vulnerability.mediumCount + .vulnerability.highCount + .vulnerability.criticalCount' result.json) -ne 0 ] && fail=5
 
-          echo EE
           [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
 
-          echo FF
           [ $fail -eq 6 ] && echo Malware found && exit 1
 
-          echo GG
           [ $fail -ne 0 ] && echo Vulnerability threshold exceeded $fail && exit 1
-
-          echo HH
-          echo $fail
-          exit 0
 
       - name: Upload Scan Result Artifact
         uses: actions/upload-artifact@v3
