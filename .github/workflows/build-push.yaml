@@ -64,9 +64,9 @@ jobs:
 
           [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
 
-          [ $fail -eq 6 ] && echo Malware found && exit 1
+          [ $fail -eq 6 ] && echo !!! Malware found !!! && exit 1
 
-          [ $fail -ne 0 ] && echo Vulnerability threshold exceeded $fail && exit 1
+          [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! && exit 1
 
       - name: Upload Scan Result Artifact
         uses: actions/upload-artifact@v3
