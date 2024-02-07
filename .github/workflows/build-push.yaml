@@ -35,14 +35,34 @@ jobs:
           REGION: us-east-1
           SBOM: true # Saves SBOM to SBOM.json so you can export it as an artifact later.
           MALWARE_SCAN: true # Enable malware scan.
+          THRESHOLD: "critical"
         run: |
-          ls -l /tmp/
           # Install tmas latest version
           curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
 
           tmas scan "$(if [ "$MALWARE_SCAN" = true ]; then echo "--malwareScan"; fi)" -r "$REGION" docker-archive:/tmp/image.tar "$(if [ "$SBOM" = true ]; then echo "--saveSBOM"; fi)" > result.json
 
           if [ "$SBOM" = true ]; then mv SBOM_* sbom.json; fi
+
+          fail=0
+          [ "${THRESHOLD}" = "any" ] && \
+            [ $(jq '.totalVulnCount' result.json) -ne 0 ] && fail=1
+
+          [ "${THRESHOLD}" = "critical" ] && \
+            [ $(jq '.criticalCount' result.json) -ne 0 ] && fail=2
+
+          [ "${THRESHOLD}" = "high" ] && \
+            [ $(jq '.highCount + .criticalCount' result.json) -ne 0 ] && fail=3
+
+          [ "${THRESHOLD}" = "medium" ] && \
+            [ $(jq '.mediumCount + .highCount + .criticalCount' result.json) -ne 0 ] && fail=4
+
+          [ "${THRESHOLD}" = "low" ] &&
+            [ $(jq '.lowCount + .mediumCount + .highCount + .criticalCount' result.json) -ne 0 ] && fail=5
+
+          [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
+
+          [ $fail -ne 0 ] && echo Vulnerability threshold exceeded or malware found; exit 1
 
       - name: Upload Scan Result Artifact
         uses: actions/upload-artifact@v3
