@@ -40,7 +40,7 @@ jobs:
       - name: List
         run: |
           ls -l /tmp/
-          
+
       - name: Vision One Container Security Scan Action
         uses: trendmicro/tmas-scan-action@1.0.10
         with:
@@ -49,7 +49,7 @@ jobs:
             REGION: us-east-1
 
             # Optional
-            SBOM: true # Saves SBOM to SBOM.json so you can export it as an artifact later.
+            SBOM: false # Saves SBOM to SBOM.json so you can export it as an artifact later.
             MALWARE_SCAN: true # Enable malware scan.
             # IMAGE: mawinkler/nginx:latest # The image need to be public or the pipeline need to have access to the private image of choice.
             LOCAL_IMAGE_TARBALL: /tmp/mynginx.tar
