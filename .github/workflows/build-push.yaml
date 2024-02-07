@@ -34,9 +34,16 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
-          tags: localhost:5000/mawinkler/nginx:latest
+          # push: true
+          tags: localhost:5000/nginx:latest
+          outputs: type=docker,dest=/tmp/mynginx.tar
           # tags: mawinkler/nginx:latest
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: myimage
+      #     path: /tmp/image.tar
 
       - name: Vision One Container Security Scan Action
         uses: trendmicro/tmas-scan-action@1.0.10
@@ -48,9 +55,8 @@ jobs:
             # Optional
             SBOM: true # Saves SBOM to SBOM.json so you can export it as an artifact later.
             MALWARE_SCAN: true # Enable malware scan.
-            IMAGE: localhost:5000/mawinkler/nginx:latest
             # IMAGE: mawinkler/nginx:latest # The image need to be public or the pipeline need to have access to the private image of choice.
-            # LOCAL_IMAGE_TARBALL: image.tar
+            LOCAL_IMAGE_TARBALL: /tmp/mynginx.tar
             # For each threshold below, select the maximum number of vulnerabilities that are acceptable.
             MAX_TOTAL: 1000
             MAX_CRITICAL: 1000
