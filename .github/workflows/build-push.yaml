@@ -40,6 +40,8 @@ jobs:
       - name: List
         run: |
           ls -l /tmp/
+          curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
+          tmas scan docker-archive:/tmp/mynginx.tar
 
       - name: Vision One Container Security Scan Action
         uses: trendmicro/tmas-scan-action@1.0.10
