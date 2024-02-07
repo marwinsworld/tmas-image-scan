@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64
+          # platforms: linux/amd64
           # push: true
           tags: mynginx:latest
           outputs: type=docker,dest=/tmp/mynginx.tar
@@ -37,6 +37,10 @@ jobs:
       #     name: myimage
       #     path: /tmp/image.tar
 
+      - name: List
+        run: |
+          ls -l /tmp/
+          
       - name: Vision One Container Security Scan Action
         uses: trendmicro/tmas-scan-action@1.0.10
         with:
