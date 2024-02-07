@@ -38,7 +38,7 @@ jobs:
       #     path: /tmp/image.tar
 
       - name: List
-        with:
+        env:
           TMAS_API_KEY: ${{ secrets.TMAS_API_KEY }}
         run: |
           ls -l /tmp/
