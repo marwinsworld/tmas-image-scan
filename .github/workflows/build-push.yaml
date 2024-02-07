@@ -48,4 +48,17 @@ jobs:
             MAX_LOW: 0
             MAX_NEGLIGIBLE: 0
             MAX_UNKNOWN: 0
-            SCAN_RESULT_ARTIFACT: result.json 
+            SCAN_RESULT_ARTIFACT: result.json
+
+      - name: Upload Scan Result Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: scan-result
+          path: result.json
+          retention-days: 30
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: SBOM.json
+          retention-days: 30
