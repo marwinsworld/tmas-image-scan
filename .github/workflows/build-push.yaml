@@ -68,6 +68,8 @@ jobs:
 
           [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! > fail
 
+          exit 0
+
       - name: Upload Scan Result Artifact
         uses: actions/upload-artifact@v3
         with:
