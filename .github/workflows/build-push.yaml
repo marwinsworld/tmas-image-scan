@@ -9,6 +9,9 @@ jobs:
   docker:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_NAME: mynginx
+      IMAGE_TAG: latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ IMAGE_NAME }}:${{ IMAGE_TAG }}
           outputs: type=docker,dest=/tmp/image.tar
 
       - name: Scan
@@ -98,4 +101,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ IMAGE_NAME }}:${{ IMAGE_TAG }}
