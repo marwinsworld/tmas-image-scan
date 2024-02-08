@@ -103,3 +103,15 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
+
+      - name: Registry Scan
+        env:
+          TMAS_API_KEY: ${{ secrets.TMAS_API_KEY }}
+          REGION: us-east-1
+          MALWARE_SCAN: true # Enable malware scan.
+        run: |
+          # Install tmas latest version
+          curl -s -L https://gist.github.com/raphabot/abae09b46c29afc7c3b918b7b8ec2a5c/raw/ | bash
+
+          echo Start scan
+          tmas scan "$(if [ "$MALWARE_SCAN" = true ]; then echo "--malwareScan"; fi)" -r "$REGION" docker:${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
