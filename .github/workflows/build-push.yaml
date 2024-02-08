@@ -64,9 +64,9 @@ jobs:
 
           [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
 
-          [ $fail -eq 6 ] && echo !!! Malware found !!! > fail || true
+          [ $fail -eq 6 ] && echo !!! Malware found !!! > malware || true
 
-          [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! > fail || true
+          [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! > vulnerabilities || true
 
           # exit 0
 
@@ -87,4 +87,6 @@ jobs:
       - name: Fail Scan
         run: |
           ls -l
-          if [ -f "fail" ]; then cat fail && exit 1; fi
+          if [ -f "malware" ]; then cat malware; fi
+          if [ -f "vulnerabilities" ]; then cat vulnerabilities; fi
+          if [ -f "malware" ] || [ -f "vulnerabilities" ]; then exit 1; fi
