@@ -29,7 +29,7 @@ jobs:
           tags: mynginx:latest
           outputs: type=docker,dest=/tmp/image.tar
 
-      - name: List
+      - name: Scan
         env:
           TMAS_API_KEY: ${{ secrets.TMAS_API_KEY }}
           REGION: us-east-1
@@ -64,9 +64,9 @@ jobs:
 
           [ $(jq '.malware.scanResult' result.json) -ne 0 ] && fail=6
 
-          [ $fail -eq 6 ] && echo !!! Malware found !!! && exit 1
+          [ $fail -eq 6 ] && echo !!! Malware found !!! > fail
 
-          [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! && exit 1
+          [ $fail -ne 0 ] && echo !!! Vulnerability threshold exceeded !!! > fail
 
       - name: Upload Scan Result Artifact
         uses: actions/upload-artifact@v3
@@ -81,3 +81,7 @@ jobs:
           name: sbom
           path: sbom.json
           retention-days: 30
+
+      - name: Fail Scan
+        run: |
+          [ -f "fail" ] && exit 1
