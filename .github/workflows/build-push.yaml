@@ -5,13 +5,13 @@ on:
     branches:
       - "main"
 
+env:
+  IMAGE_NAME: mynginx
+  IMAGE_TAG: latest
+
 jobs:
   docker:
     runs-on: ubuntu-latest
-
-    env:
-      IMAGE_NAME: mynginx
-      IMAGE_TAG: latest
 
     steps:
       - name: Checkout
