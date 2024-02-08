@@ -86,4 +86,4 @@ jobs:
 
       - name: Fail Scan
         run: |
-          [ -f "fail" ] && exit 1
+          [ -f "fail" ] && cat fail && exit 1
